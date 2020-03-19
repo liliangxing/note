@@ -53,24 +53,24 @@
         >
     </ListView>
 
-    <Button
-        android:id="@+id/note_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="全部"
-        android:alpha="0.3"
-        android:layout_above="@+id/date"
-        android:layout_alignRight="@+id/contentScroll"
-        />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="36dp"
         android:gravity="center_vertical"
         android:textColor="@color/colorAccent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/note_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全部"
+        android:layout_alignBottom="@+id/date"
+        android:layout_alignRight="@+id/date"
+        />
 
 </RelativeLayout>
