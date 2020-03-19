@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
             noteDb.saveNote(null, content, tempDate, tempClass);
-            doRefresh("我的笔记");
+            doRefresh(getString(R.string.app_name));
             ToastUtils.show("您有6个字以上新的剪贴内容，已加进笔记！");
         }
     }
