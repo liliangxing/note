@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar toolbar;
 
-    private ClipboardManager clipboardManager;
+    private  ClipboardManager clipboardManager;
+    private  ClipboardManager.OnPrimaryClipChangedListener onPrimaryClipChangedListener;
 
 
     private String mPreviousText = "";
@@ -254,9 +255,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         ToastUtils.init(this);
-        clipboardManager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
+        onPrimaryClipChangedListener = new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
-            public void onPrimaryClipChanged() {
+            public void  onPrimaryClipChanged() {
                 ClipData clipData = clipboardManager.getPrimaryClip();
                 ClipData.Item item = clipData.getItemAt(0);
                 if(null == item || null == item.getText()){
@@ -269,7 +270,14 @@ public class MainActivity extends AppCompatActivity
                     doPaste();
                 }
             }
-        });
+        };
+        clipboardManager.addPrimaryClipChangedListener(onPrimaryClipChangedListener);
+    }
+
+    @Override
+    public void onDestroy() {
+        clipboardManager.removePrimaryClipChangedListener(onPrimaryClipChangedListener);
+        super.onDestroy();
     }
 
     private void doPaste(){
