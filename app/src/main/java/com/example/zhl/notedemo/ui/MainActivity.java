@@ -463,4 +463,13 @@ public class MainActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
         toolbar.setTitle(title);
     }
+
+    /**
+     * 重写finish()方法
+     */
+    @Override
+    public void finish() {
+        //super.finish(); //记住不要执行此句
+        moveTaskToBack(true); //设置该activity永不过期，即不执行onDestroy()
+    }
 }
