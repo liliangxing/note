@@ -68,12 +68,12 @@ public class MainActivity extends AppCompatActivity
     private  ClipboardManager clipboardManager;
     private  ClipboardManager.OnPrimaryClipChangedListener onPrimaryClipChangedListener;
 
-
-    private String mPreviousText = "";
+    public static MainActivity instance;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance =this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,8 +86,12 @@ public class MainActivity extends AppCompatActivity
         searchEdit = (EditText) findViewById(R.id.search_edit);
         clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         checkPermission();
+        bindServiceConnection();
     }
-
+    private void bindServiceConnection() {
+        Intent intent = new Intent(MainActivity.this, PasteCopyService.class);
+        startService(intent);
+    }
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults){
 
@@ -258,17 +262,7 @@ public class MainActivity extends AppCompatActivity
         onPrimaryClipChangedListener = new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void  onPrimaryClipChanged() {
-                ClipData clipData = clipboardManager.getPrimaryClip();
-                ClipData.Item item = clipData.getItemAt(0);
-                if(null == item || null == item.getText()){
-                    ToastUtils.show("获取剪贴板失败");
-                    return;
-                }
-                if(mPreviousText.equals(item.getText().toString())){ return;}
-                else{
-                    mPreviousText = item.getText().toString();
-                    doPaste();
-                }
+
             }
         };
         clipboardManager.addPrimaryClipChangedListener(onPrimaryClipChangedListener);
@@ -280,7 +274,7 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
     }
 
-    private void doPaste(){
+    protected void doPaste(){
         //获取剪贴板管理器：
         ClipData cmData = clipboardManager.getPrimaryClip();
         String content = "";
