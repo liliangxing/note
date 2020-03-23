@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
 
     private  ClipboardManager clipboardManager;
-    private  ClipboardManager.OnPrimaryClipChangedListener onPrimaryClipChangedListener;
 
     public static MainActivity instance;
 
@@ -274,21 +273,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         ToastUtils.init(this);
-        onPrimaryClipChangedListener = new ClipboardManager.OnPrimaryClipChangedListener() {
-            @Override
-            public void  onPrimaryClipChanged() {
-
-            }
-        };
-        clipboardManager.addPrimaryClipChangedListener(onPrimaryClipChangedListener);
     }
-
-    @Override
-    public void onDestroy() {
-        clipboardManager.removePrimaryClipChangedListener(onPrimaryClipChangedListener);
-        super.onDestroy();
-    }
-
     protected void doPaste(){
         //获取剪贴板管理器：
         ClipData cmData = clipboardManager.getPrimaryClip();
