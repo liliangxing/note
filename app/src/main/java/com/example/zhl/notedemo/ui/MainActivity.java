@@ -4,13 +4,16 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -70,7 +73,18 @@ public class MainActivity extends AppCompatActivity
 
     public static MainActivity instance;
 
+    protected PasteCopyService musicService;
+    private ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            musicService = ((PasteCopyService.MyBinder)iBinder).getService();
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicService = null;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         instance =this;
@@ -91,6 +105,7 @@ public class MainActivity extends AppCompatActivity
     private void bindServiceConnection() {
         Intent intent = new Intent(MainActivity.this, PasteCopyService.class);
         startService(intent);
+        bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults){

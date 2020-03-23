@@ -15,7 +15,11 @@ import android.view.View;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
 public class PasteCopyService extends Service {
-
+    public class MyBinder extends Binder {
+        PasteCopyService getService() {
+            return PasteCopyService.this;
+        }
+    }
     ClipboardManager clipboardManager;
 
     private String mPreviousText = "";
