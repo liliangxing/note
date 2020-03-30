@@ -40,14 +40,14 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
+import com.example.zhl.notedemo.service.PasteCopyService;
 import com.example.zhl.notedemo.utils.NoteUtil;
-import com.example.zhl.notedemo.utils.PermissionReq;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private Button note_new,cancel,choseAll,delete;
@@ -72,18 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     public static MainActivity instance;
 
-    protected PasteCopyService musicService;
-    private ServiceConnection sc = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            musicService = ((PasteCopyService.MyBinder)iBinder).getService();
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            musicService = null;
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         instance =this;
@@ -99,13 +88,8 @@ public class MainActivity extends AppCompatActivity
         searchEdit = (EditText) findViewById(R.id.search_edit);
         clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         checkPermission();
-        bindServiceConnection();
     }
-    private void bindServiceConnection() {
-        Intent intent = new Intent(MainActivity.this, PasteCopyService.class);
-        startService(intent);
-        bindService(intent, sc, this.BIND_AUTO_CREATE);
-    }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults){
 
@@ -274,7 +258,7 @@ public class MainActivity extends AppCompatActivity
 
         ToastUtils.init(this);
     }
-    protected void doPaste(){
+    public void doPaste(){
         //获取剪贴板管理器：
         ClipData cmData = clipboardManager.getPrimaryClip();
         String content = "";

@@ -24,7 +24,7 @@
 
         <activity android:name=".ui.EditNoteActivity" />
         <activity android:name=".ui.AboutActivity" />
-        <service android:name="com.example.zhl.notedemo.ui.PasteCopyService" android:exported="true"/>
+        <service android:name="com.example.zhl.notedemo.service.PasteCopyService" android:exported="true"/>
     </application>
 
 </manifest>
