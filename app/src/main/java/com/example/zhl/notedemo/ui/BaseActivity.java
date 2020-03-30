@@ -51,38 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         bindService();
     }
 
-
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        initView();
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        initView();
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        super.setContentView(view, params);
-        initView();
-    }
-
-    private void initView() {
-        ViewBinder.bind(this);
-
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar == null) {
-            throw new IllegalStateException("Layout is required to include a Toolbar with id 'toolbar'");
-        }
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
     private void bindService() {
         Intent intent = new Intent();
         intent.setClass(this, PasteCopyService.class);
