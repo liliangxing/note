@@ -266,12 +266,12 @@ public class MainActivity extends BaseActivity
             ClipData.Item item = cmData.getItemAt(0);
             content = item.getText().toString();
         }
-        if(content.length()>= 6) {
+        if(content.length()>= 200) {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
             noteDb.saveNote(null, content, tempDate, tempClass);
             doRefresh(getString(R.string.app_name));
-            ToastUtils.show("您有6个字以上新的剪贴内容，已加进笔记！");
+            ToastUtils.show("您有200个字以上新的剪贴内容，已加进笔记！");
         }
     }
 
@@ -308,7 +308,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        cursor = noteDb.queryAll();
+        cursor = noteDb.queryByClass(toolbar.getTitle().toString().equals(getString(R.string.app_name))
+        ?EditNoteActivity.listClass[0]:toolbar.getTitle().toString());
         adapter.changeCursor(cursor);
         switch (requestCode){
             case 100:                  //新增便签返回G列表时
@@ -392,7 +393,7 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.nav_all) {
             // Handle the camera action
-            doRefresh("全部");
+            doRefresh(getString(R.string.app_name));
         } else if (id == R.id.nav_work) {
             Cursor cursor = noteDb.queryWorkClass();
             adapter.changeCursor(cursor);

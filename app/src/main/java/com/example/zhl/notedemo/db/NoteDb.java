@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.example.zhl.notedemo.ui.EditNoteActivity;
+
 import org.w3c.dom.ProcessingInstruction;
 
 /**
@@ -61,6 +63,12 @@ public class NoteDb {
         return db.query("note",null,null,null,null,null,"date desc");
     }
 
+     public Cursor queryByClass(String classname){
+        if(classname.equals(EditNoteActivity.listClass[0])){
+            return queryAll();
+        }
+        return db.query("note",null,"class = ?",new String[]{classname},null,null,null);
+    }
 
     //查询所有数据库数据（work）
     public Cursor queryWorkClass(){
@@ -74,7 +82,7 @@ public class NoteDb {
 
     //查询所有数据库数据（other）
     public Cursor queryOtherClass(){
-        return db.query("note",null,"class = ?",new String[]{"生活"},null,null,null);
+        return db.query("note",null,"class = ?",new String[]{"其他"},null,null,null);
     }
 
 

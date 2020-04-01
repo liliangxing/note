@@ -49,6 +49,7 @@ public class MyAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
         viewHolder.title_item = (TextView) view.findViewById(R.id.title_item);
         viewHolder.date_item = (TextView) view.findViewById(R.id.date_item);
+        viewHolder.class_item = (TextView) view.findViewById(R.id.class_item);
         viewHolder.cb_item = (CheckBox) view.findViewById(R.id.check);
         view.setTag(viewHolder);
         return view;
@@ -59,6 +60,7 @@ public class MyAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         String temptitle_item = cursor.getString(cursor.getColumnIndex("title"));
         String tempdate_item = cursor.getString(cursor.getColumnIndex("date"));
+        String tempdate_class = cursor.getString(cursor.getColumnIndex("class"));
 
        if (ismultiMode){
              viewHolder.cb_item.setVisibility(View.VISIBLE);
@@ -78,13 +80,17 @@ public class MyAdapter extends CursorAdapter {
          }
 
         viewHolder.title_item.setText(temptitle_item);
+
         viewHolder.date_item.setText(tempdate_item);
+        String classStr = "["+tempdate_class+"] ";
+        viewHolder.class_item.setText(classStr);
 
     }
 
     class ViewHolder{
         TextView title_item;
         TextView date_item;
+        TextView class_item;
         CheckBox cb_item;
     }
 
