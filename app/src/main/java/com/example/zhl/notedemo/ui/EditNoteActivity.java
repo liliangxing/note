@@ -1,14 +1,10 @@
 package com.example.zhl.notedemo.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.ShareActionProvider;
@@ -26,10 +22,6 @@ import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
 import com.example.zhl.notedemo.utils.NoteUtil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by zhl on 2015/12/31.
  */
@@ -44,6 +36,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private Button note_class;
     private ListView noteClassListView;
     private InputMethodManager imm;
+    private boolean hadSaved;
     public static final String[] listClass = {"全部","工作","生活","其他"};
 
     @Override
@@ -149,37 +142,36 @@ public class EditNoteActivity extends AppCompatActivity {
             noteClassListView.setVisibility(View.INVISIBLE);
         }else {
             super.onBackPressed();
-            String tempTitle = title.getText().toString();
-            String tempContent = content.getText().toString();
-            String tempClass = note_class.getText().toString();
-            String tempDate = NoteUtil.getDate();
-            noteDb = NoteDb.getInstance(this);
-
-            if (starttempdate == null){
-
-                noteDb.saveNote(tempTitle,tempContent,tempDate,tempClass);
-            }else if (tempTitle == starttemptitle&&tempContent == starttempcontent){
-                return;
-            }else if (starttemptitle.equals(tempTitle)&&starttempcontent.equals(tempContent)&&starttempclass.equals(tempClass)){
-                return;
-            }else {
-                noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
-            }
+            autoSave();
+            hadSaved = true;
         }
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!hadSaved) {
+            autoSave();
+        }
+    }
 
+    private void autoSave(){
+        String tempTitle = title.getText().toString();
+        String tempContent = content.getText().toString();
+        String tempClass = note_class.getText().toString();
+        String tempDate = NoteUtil.getDate();
+        noteDb = NoteDb.getInstance(this);
 
-/*        if (tempContent.equals("")&&tempTitle.equals("")){
+        if (starttempdate == null){
+
+            noteDb.saveNote(tempTitle,tempContent,tempDate,tempClass);
+        }else if (tempTitle == starttemptitle&&tempContent == starttempcontent){
             return;
-            // Toast.makeText(this,"标题和内容都为空",Toast.LENGTH_SHORT).show();
+        }else if (starttemptitle.equals(tempTitle)&&starttempcontent.equals(tempContent)&&starttempclass.equals(tempClass)){
+            return;
         }else {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            String tempDate = dateFormat.format(date);
-            noteDb = NoteDb.getInstance(this);
-            noteDb.saveNote(tempTitle,tempContent,tempDate);
-
-        }*/
+            noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
+        }
     }
 
     @Override

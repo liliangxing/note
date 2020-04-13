@@ -8,8 +8,6 @@ import android.text.TextUtils;
 
 import com.example.zhl.notedemo.ui.EditNoteActivity;
 
-import org.w3c.dom.ProcessingInstruction;
-
 /**
  * Created by zhl on 2015/12/31.
  */
@@ -69,7 +67,9 @@ public class NoteDb {
         }
         return db.query("note",null,"class = ?",new String[]{classname},null,null,null);
     }
-
+    public Cursor queryByTitle(String keyword){
+        return db.query("note",null,"title = ?",new String[]{keyword},null,null,"date desc");
+    }
     //查询所有数据库数据（work）
     public Cursor queryWorkClass(){
         return db.query("note",null,"class = ?",new String[]{"工作"},null,null,null);
@@ -103,6 +103,9 @@ public class NoteDb {
     public void updateDefaultClass(){
 
         db.execSQL("update note set class = ? where class is ?",new String[]{"全部",null});
+    }
+    public void updateContentById(String content,String id){
+        db.execSQL("update note set content =  ? where _id = ?",new String[]{content,id});
     }
 
 

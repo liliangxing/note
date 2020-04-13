@@ -4,16 +4,13 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +23,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +36,6 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
-import com.example.zhl.notedemo.service.PasteCopyService;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
@@ -71,6 +66,7 @@ public class MainActivity extends BaseActivity
     private  ClipboardManager clipboardManager;
 
     public static MainActivity instance;
+    public final static String DOUYIN_TITLE="抖音链接";
 
 
     @Override
@@ -272,6 +268,26 @@ public class MainActivity extends BaseActivity
             noteDb.saveNote(null, content, tempDate, tempClass);
             doRefresh(getString(R.string.app_name));
             ToastUtils.show("您有200个字以上新的剪贴内容，已加进笔记！");
+            return;
+        }
+        if(content.contains("v.douyin.com")){
+            doDouyinLink(content);
+        }
+    }
+
+    private void doDouyinLink(String content){
+        cursor = noteDb.queryByTitle(DOUYIN_TITLE);
+        if (cursor.moveToFirst()){
+            String id = cursor.getString(cursor.getColumnIndex("_id"));
+            content = cursor.getString(cursor.getColumnIndex("content"))+
+                    "\n-------------------------\n"+content;
+            content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
+                    "");
+            noteDb.updateContentById(content,id);
+        }else {
+            String tempClass = EditNoteActivity.listClass[0];
+            String tempDate = NoteUtil.getDate();
+            noteDb.saveNote(DOUYIN_TITLE, content, tempDate, tempClass);
         }
     }
 
