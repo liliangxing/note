@@ -255,6 +255,7 @@ public class MainActivity extends BaseActivity
         ToastUtils.init(this);
     }
     public void doPaste(){
+        if(null != EditNoteActivity.intance){EditNoteActivity.intance.autoSave();}
         //获取剪贴板管理器：
         ClipData cmData = clipboardManager.getPrimaryClip();
         String content = "";
@@ -284,6 +285,7 @@ public class MainActivity extends BaseActivity
             content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
                     "\n");
             noteDb.updateContentById(content,id);
+            if(null != EditNoteActivity.intance){EditNoteActivity.intance.onDestroy();}
         }else {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();

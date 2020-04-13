@@ -37,13 +37,14 @@ public class EditNoteActivity extends AppCompatActivity {
     private ListView noteClassListView;
     private InputMethodManager imm;
     private boolean hadSaved;
+    public  static EditNoteActivity intance;
     public static final String[] listClass = {"全部","工作","生活","其他"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_note);
-
+        intance = this;
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
@@ -155,7 +156,7 @@ public class EditNoteActivity extends AppCompatActivity {
         }
     }
 
-    private void autoSave(){
+    public void autoSave(){
         String tempTitle = title.getText().toString();
         String tempContent = content.getText().toString();
         String tempClass = note_class.getText().toString();
@@ -172,6 +173,7 @@ public class EditNoteActivity extends AppCompatActivity {
         }else {
             noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
         }
+        hadSaved = true;
     }
 
     @Override
