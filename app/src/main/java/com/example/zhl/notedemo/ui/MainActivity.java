@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity
             content = cursor.getString(cursor.getColumnIndex("content"))+
                     "\n-------------------------\n"+content;
             content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
-                    "");
+                    "\n");
             noteDb.updateContentById(content,id);
         }else {
             String tempClass = EditNoteActivity.listClass[0];
