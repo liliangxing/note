@@ -104,8 +104,9 @@ public class NoteDb {
 
         db.execSQL("update note set class = ? where class is ?",new String[]{"全部",null});
     }
-    public void updateContentById(String content,String id){
-        db.execSQL("update note set content =  ? where _id = ?",new String[]{content,id});
+    public void updateContentById(String content,String tempDate,String id){
+        db.execSQL("update note set content =  ? , date = ? where _id = ?",
+                new String[]{content,tempDate,id});
     }
 
 

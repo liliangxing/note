@@ -273,6 +273,8 @@ public class MainActivity extends BaseActivity
         }
         if(content.contains("v.douyin.com")){
             doDouyinLink(content);
+            doRefresh(getString(R.string.app_name));
+            ToastUtils.show("您有新的抖音链接，已加进笔记！");
         }
     }
 
@@ -284,8 +286,8 @@ public class MainActivity extends BaseActivity
                     "\n-------------------------\n"+content;
             content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
                     "\n");
-            noteDb.updateContentById(content,id);
-            if(null != EditNoteActivity.intance){EditNoteActivity.intance.onDestroy();}
+            noteDb.updateContentById(content,NoteUtil.getDate(),id);
+            if(null != EditNoteActivity.intance){EditNoteActivity.intance.finish();}
         }else {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
