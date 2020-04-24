@@ -11,8 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -69,15 +67,6 @@ public class MainActivity extends BaseActivity
 
     public static MainActivity instance;
     public final static String DOUYIN_TITLE="抖音链接";
-
-    private Handler handler;
-    private static final long TIME_UPDATE = 300L;
-    private Runnable mPublishRunnable = new Runnable() {
-        @Override
-        public void run() {
-            handler.postDelayed(this, TIME_UPDATE);
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         instance =this;
@@ -93,8 +82,6 @@ public class MainActivity extends BaseActivity
         searchEdit = (EditText) findViewById(R.id.search_edit);
         clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         checkPermission();
-        handler = new Handler(Looper.getMainLooper());
-        handler.post(mPublishRunnable);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -481,10 +468,5 @@ public class MainActivity extends BaseActivity
     public void finish() {
         //super.finish(); //记住不要执行此句
         moveTaskToBack(true); //设置该activity永不过期，即不执行onDestroy()
-    }
-    @Override
-    public void onDestroy() {
-        handler.removeCallbacks(mPublishRunnable);
-        super.onDestroy();
     }
 }
