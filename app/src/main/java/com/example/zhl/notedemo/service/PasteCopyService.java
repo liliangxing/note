@@ -6,9 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -20,13 +18,11 @@ import com.example.zhl.notedemo.utils.ToastUtils;
  * Created by wcy on 2015/11/27.
  */
 public class PasteCopyService extends Service {
-    private static final long TIME_UPDATE = 300L;
     private static final String TAG = "Service";
 
     ClipboardManager clipboardManager;
 
     private String mPreviousText = "";
-    private Handler handler;
     public class PlayBinder extends Binder {
         public PasteCopyService getService() {
             return PasteCopyService.this;
@@ -36,7 +32,6 @@ public class PasteCopyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        handler = new Handler(Looper.getMainLooper());
         Log.i(TAG, "onCreate: " + getClass().getSimpleName());
         clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -56,15 +51,9 @@ public class PasteCopyService extends Service {
                 }
             }
         });
-        handler.post(mPublishRunnable);
     }
 
-    private Runnable mPublishRunnable = new Runnable() {
-        @Override
-        public void run() {
-            handler.postDelayed(this, TIME_UPDATE);
-        }
-    };
+
 
     @Nullable
     @Override
@@ -86,10 +75,5 @@ public class PasteCopyService extends Service {
             }
         }
         return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        handler.removeCallbacks(mPublishRunnable);
     }
 }
