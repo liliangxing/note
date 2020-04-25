@@ -61,9 +61,8 @@ public class PasteCopyService extends Service {
         return new PlayBinder();
     }
 
-    public static void startCommand(Context context, String action) {
+    public static void startCommand(Context context) {
         Intent intent = new Intent(context, PasteCopyService.class);
-        intent.setAction(action);
         context.startService(intent);
     }
 

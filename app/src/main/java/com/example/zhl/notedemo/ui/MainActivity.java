@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
+import com.example.zhl.notedemo.fragment.ClipFragment;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
@@ -65,6 +66,8 @@ public class MainActivity extends BaseActivity
 
     private  ClipboardManager clipboardManager;
 
+    private ClipFragment clipFragment;
+
     public static MainActivity instance;
     public final static String DOUYIN_TITLE="抖音链接";
     @Override
@@ -82,6 +85,14 @@ public class MainActivity extends BaseActivity
         searchEdit = (EditText) findViewById(R.id.search_edit);
         clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         checkPermission();
+    }
+
+    @Override
+    protected void onServiceBound() {
+        clipFragment =new ClipFragment();
+        getSupportFragmentManager()
+                .beginTransaction().
+                add(R.id.ll_fragment_container,clipFragment,"ONE").commit();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
