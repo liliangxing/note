@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.service.PasteCopyService;
+import com.example.zhl.notedemo.utils.binding.ViewBinder;
 
 /**
  * 基类<br>
@@ -26,6 +27,7 @@ public  class ClipFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ViewBinder.bind(this, getView());
         PasteCopyService.startCommand(getActivity());
     }
 }

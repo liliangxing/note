@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity
         clipFragment =new ClipFragment();
         getSupportFragmentManager()
                 .beginTransaction().
-                add(R.id.ll_fragment_container,clipFragment,"ONE").commit();
+                add(R.id.ll_fragment_container,clipFragment,"ONE").commitAllowingStateLoss();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
