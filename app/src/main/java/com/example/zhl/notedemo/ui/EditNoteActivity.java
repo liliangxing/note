@@ -100,6 +100,7 @@ public class EditNoteActivity extends AppCompatActivity {
         note_not_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                noteClassListView.setVisibility(View.INVISIBLE);
                 hadBackSaved = true;
                 onBackPressed();
                 ToastUtils.show("已返回");
