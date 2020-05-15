@@ -36,9 +36,10 @@ public class EditNoteActivity extends AppCompatActivity {
     private ShareActionProvider mShareActionProvider;
     private Button note_class;
     private Button note_save;
+    private Button note_not_save;
     private ListView noteClassListView;
     private InputMethodManager imm;
-    private boolean hadSaved;
+    private boolean hadBackSaved;
     public  static EditNoteActivity intance;
     public static final String[] listClass = {"全部","工作","生活","其他"};
 
@@ -53,6 +54,7 @@ public class EditNoteActivity extends AppCompatActivity {
         date = (TextView) findViewById(R.id.date);
         note_class = (Button) findViewById(R.id.note_class);
         note_save = (Button) findViewById(R.id.note_save);
+        note_not_save = (Button) findViewById(R.id.note_not_save);
 
 
         setSupportActionBar(mToolbar);
@@ -93,6 +95,14 @@ public class EditNoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 autoSave();
                 ToastUtils.show("保存成功");
+            }
+        });
+        note_not_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hadBackSaved = true;
+                onBackPressed();
+                ToastUtils.show("已返回");
             }
         });
         content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -152,15 +162,17 @@ public class EditNoteActivity extends AppCompatActivity {
             noteClassListView.setVisibility(View.INVISIBLE);
         }else {
             super.onBackPressed();
-            autoSave();
-            hadSaved = true;
+            if(!hadBackSaved) {
+                autoSave();
+                hadBackSaved = true;
+            }
         }
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(!hadSaved) {
+        if(!hadBackSaved) {
             autoSave();
         }
     }
