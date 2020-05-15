@@ -34,6 +34,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private String starttempdate,starttempcontent,starttemptitle,starttempclass;
     private ShareActionProvider mShareActionProvider;
     private Button note_class;
+    private Button note_save;
     private ListView noteClassListView;
     private InputMethodManager imm;
     private boolean hadSaved;
@@ -50,6 +51,7 @@ public class EditNoteActivity extends AppCompatActivity {
         content = (EditText) findViewById(R.id.content);
         date = (TextView) findViewById(R.id.date);
         note_class = (Button) findViewById(R.id.note_class);
+        note_save = (Button) findViewById(R.id.note_save);
 
 
         setSupportActionBar(mToolbar);
@@ -75,7 +77,6 @@ public class EditNoteActivity extends AppCompatActivity {
 
         }
 
-        note_class = (Button) findViewById(R.id.note_class);
         noteClassListView = (ListView) findViewById(R.id.list_class);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditNoteActivity.this,android.R.layout.simple_list_item_1,listClass);
         noteClassListView.setAdapter(adapter);
@@ -86,6 +87,12 @@ public class EditNoteActivity extends AppCompatActivity {
             }
         });
 
+        note_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoSave();
+            }
+        });
         content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View arg0, boolean hasFocus) {
@@ -173,7 +180,6 @@ public class EditNoteActivity extends AppCompatActivity {
         }else {
             noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
         }
-        hadSaved = true;
     }
 
     @Override

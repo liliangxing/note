@@ -65,6 +65,14 @@
         android:layout_alignParentStart="true" />
 
     <Button
+        android:id="@+id/note_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/date"
+        android:layout_toLeftOf="@+id/note_class"
+        android:text="保存" />
+
+    <Button
         android:id="@+id/note_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

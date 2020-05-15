@@ -272,15 +272,15 @@ public class MainActivity extends BaseActivity
             ClipData.Item item = cmData.getItemAt(0);
             content = item.getText().toString();
         }
-        if(content.length()>= 200) {
+       /* if(content.length()>= 200) {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
             noteDb.saveNote(null, content, tempDate, tempClass);
             doRefresh(getString(R.string.app_name));
             ToastUtils.show("您有200个字以上新的剪贴内容，已加进笔记！");
             return;
-        }
-        if(content.contains("v.douyin.com")){
+        }*/
+        if(content.contains("v.douyin.com")||content.contains("www.iesdouyin.com/share/video")){
             doDouyinLink(content);
             doRefresh(getString(R.string.app_name));
             ToastUtils.show("您有新的抖音链接，已加进笔记！");
