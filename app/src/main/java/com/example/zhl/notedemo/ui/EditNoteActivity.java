@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
 import com.example.zhl.notedemo.utils.NoteUtil;
+import com.example.zhl.notedemo.utils.ToastUtils;
 
 /**
  * Created by zhl on 2015/12/31.
@@ -91,6 +92,7 @@ public class EditNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 autoSave();
+                ToastUtils.show("保存成功");
             }
         });
         content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
