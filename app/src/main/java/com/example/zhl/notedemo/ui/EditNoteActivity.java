@@ -103,7 +103,6 @@ public class EditNoteActivity extends AppCompatActivity {
                 noteClassListView.setVisibility(View.INVISIBLE);
                 hadBackSaved = true;
                 onBackPressed();
-                ToastUtils.show("已返回");
             }
         });
         content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -194,6 +193,7 @@ public class EditNoteActivity extends AppCompatActivity {
             return;
         }else {
             noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
+            ToastUtils.show("有新的修改，已保存");
         }
     }
 

@@ -86,6 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/date"
         android:layout_alignRight="@+id/date"
-        android:text="不保存" />
+        android:text="退出编辑" />
 
 </RelativeLayout>
