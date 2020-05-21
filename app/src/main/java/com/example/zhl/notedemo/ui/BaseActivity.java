@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import com.example.zhl.notedemo.utils.binding.ViewBinder;
  * Created by wcy on 2015/11/26.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    protected Handler handler;
     protected PasteCopyService pasteCopyService;
     private ServiceConnection serviceConnection;
     private ProgressDialog progressDialog;
@@ -45,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setSystemBarTransparent();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        handler = new Handler(Looper.getMainLooper());
         bindService();
     }
 
