@@ -170,16 +170,17 @@ public class MainActivity extends BaseActivity
                     recordCursorIdStatus.put(selectId,isCheck);
                 }else {
                     //Toast.makeText(MainActivity.this, "弹出编辑界面" + position, Toast.LENGTH_SHORT).show();
-                    Long editId = adapter.getItemId(position);
                     Cursor adapterCursor = adapter.getCursor();
                     adapterCursor.moveToPosition(position);
                     String edittitle = adapterCursor.getString(adapterCursor.getColumnIndex("title"));
                     String editcontent = adapterCursor.getString(adapterCursor.getColumnIndex("content"));
+                    String editId = adapterCursor.getString(adapterCursor.getColumnIndex("_id"));
                     String editdate = adapterCursor.getString(adapterCursor.getColumnIndex("date"));
                     String editclass = adapterCursor.getString(adapterCursor.getColumnIndex("class"));
                     Intent intent = new Intent(MainActivity.this,EditNoteActivity.class);
                     intent.putExtra("edittitle",edittitle);
                     intent.putExtra("editcontent",editcontent);
+                    intent.putExtra("editId",editId);
                     intent.putExtra("editdate",editdate);
                     intent.putExtra("editclass",editclass);
                     startActivityForResult(intent,101);

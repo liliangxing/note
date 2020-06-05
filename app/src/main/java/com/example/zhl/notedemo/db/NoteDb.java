@@ -32,8 +32,8 @@ public class NoteDb {
     }
 
     //新增便签
-    public void saveNote(String tempTitle,String tempContent,String tempDate,String tempClass){
-        if(TextUtils.isEmpty(tempTitle+tempContent)) return;
+    public long saveNote(String tempTitle,String tempContent,String tempDate,String tempClass){
+        if(TextUtils.isEmpty(tempTitle+tempContent)) return 0;
         ContentValues values = new ContentValues();
         values.put("title",tempTitle);
         values.put("content",tempContent);
@@ -42,18 +42,19 @@ public class NoteDb {
         if(TextUtils.isEmpty(tempTitle)){
             values.put("title",tempContent.trim().substring(0,16>tempContent.length()?tempContent.length():16));
         }
-        db.insert("note", null, values);
+        long id = db.insert("note", null, values);
         values.clear();
+        return id;
     }
 
     //更新便签
-    public void updateNote(String tempTitle, String tempContent, String tempDate,String starttempdate,String tempClass){
+    public void updateNote(String tempTitle, String tempContent, String tempDate,String editId,String tempClass){
         ContentValues values = new ContentValues();
         values.put("title",tempTitle);
         values.put("content",tempContent);
         values.put("date", tempDate);
         values.put("class", tempClass);
-        db.update("note", values, "date = ?", new String[]{starttempdate});
+        db.update("note", values, "_id = ?", new String[]{editId});
     }
 
     //查询所有数据库数据（all）

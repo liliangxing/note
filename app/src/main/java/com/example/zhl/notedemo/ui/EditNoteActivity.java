@@ -32,7 +32,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private EditText title,content;
     private Toolbar mToolbar;
     private NoteDb noteDb;
-    private String starttempdate,starttempcontent,starttemptitle,starttempclass;
+    private String starttempdate,editId,starttempcontent,starttemptitle,starttempclass;
     private ShareActionProvider mShareActionProvider;
     private Button note_class;
     private Button note_save;
@@ -68,11 +68,12 @@ public class EditNoteActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        starttempdate = intent.getStringExtra("editdate");
-        if (starttempdate != null){
+        editId = intent.getStringExtra("editId");
+        if (editId != null){
             starttemptitle = intent.getStringExtra("edittitle");
             starttempcontent = intent.getStringExtra("editcontent");
             starttempclass = intent.getStringExtra("editclass");
+            starttempdate = intent.getStringExtra("editdate");
             title.setText(starttemptitle);
             content.setText(starttempcontent);
             date.setText(starttempdate);
@@ -184,15 +185,18 @@ public class EditNoteActivity extends AppCompatActivity {
         String tempDate = NoteUtil.getDate();
         noteDb = NoteDb.getInstance(this);
 
-        if (starttempdate == null){
-
-            noteDb.saveNote(tempTitle,tempContent,tempDate,tempClass);
-        }else if (tempTitle == starttemptitle&&tempContent == starttempcontent){
+        if (editId == null){
+            editId = noteDb.saveNote(tempTitle,tempContent,tempDate,tempClass)+"";
+            starttemptitle = tempTitle;
+            starttempcontent = tempContent;
+            starttempclass = tempClass;
+            starttempdate = tempDate;
+        }else if (tempTitle.equals(starttemptitle)&&tempContent.equals(starttempcontent)){
             return;
         }else if (starttemptitle.equals(tempTitle)&&starttempcontent.equals(tempContent)&&starttempclass.equals(tempClass)){
             return;
         }else {
-            noteDb.updateNote(tempTitle, tempContent, tempDate,starttempdate,tempClass);
+            noteDb.updateNote(tempTitle, tempContent, tempDate,editId,tempClass);
             ToastUtils.show("有新的修改，已保存");
         }
     }
