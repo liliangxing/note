@@ -13,19 +13,21 @@ import android.util.Log;
 import com.example.zhl.notedemo.ui.MainActivity;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * 音乐播放后台服务
  * Created by wcy on 2015/11/27.
  */
-public class PasteCopyService extends Service {
+public class ServiceTwo extends Service {
     private static final String TAG = "Service";
 
     ClipboardManager clipboardManager;
-
-    private String mPreviousText = "";
     public class PlayBinder extends Binder {
-        public PasteCopyService getService() {
-            return PasteCopyService.this;
+        public ServiceTwo getService() {
+            return ServiceTwo.this;
         }
     }
 
@@ -44,9 +46,9 @@ public class PasteCopyService extends Service {
                     ToastUtils.show("获取剪贴板失败");
                     return;
                 }
-                if(mPreviousText.equals(item.getText().toString())){ return;}
+                if(MainActivity.mPreviousText.equals(item.getText().toString())){ return;}
                 else{
-                    mPreviousText = item.getText().toString();
+                    MainActivity.mPreviousText = item.getText().toString();
                     MainActivity.instance.doPaste();
                 }
             }
@@ -58,21 +60,40 @@ public class PasteCopyService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new PlayBinder();
+        return null;
     }
 
     public static void startCommand(Context context) {
-        Intent intent = new Intent(context, PasteCopyService.class);
+        Intent intent = new Intent(context, ServiceTwo.class);
         context.startService(intent);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && intent.getAction() != null) {
-            switch (intent.getAction()) {
-
-            }
-        }
-        return START_NOT_STICKY;
+        thread.start();
+        return START_REDELIVER_INTENT;
     }
+    Thread thread = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+
+                @Override
+                public void run() {
+                    Log.e(TAG, "ServiceTwo Run: " + System.currentTimeMillis());
+                    boolean b = MainActivity.isServiceWorked(ServiceTwo.this, "com.example.zhl.notedemo.service.ServiceOne");
+                    if(!b) {
+                        MainActivity.mPreviousText = "ServiceTwo已失效"+new Date();
+                        MainActivity.instance.doPaste();
+                        Intent service = new Intent(ServiceTwo.this, ServiceOne.class);
+                        startService(service);
+                    }
+                }
+            };
+            timer.schedule(task, 0, 1000);
+        }
+    });
+
 }

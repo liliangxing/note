@@ -9,7 +9,6 @@
         android:name=".ui.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:launchMode="singleTask"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -24,7 +23,20 @@
 
         <activity android:name=".ui.EditNoteActivity"  android:launchMode="singleTask" android:exported="true" />
         <activity android:name=".ui.AboutActivity" />
-        <service android:name="com.example.zhl.notedemo.service.PasteCopyService"/>
+
+        <service
+            android:name="com.example.zhl.notedemo.service.ServiceOne">
+            <intent-filter>
+                <action android:name="com.example.zhl.notedemo.service.ServiceOne" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.example.zhl.notedemo.service.ServiceTwo">
+            <intent-filter>
+                <action android:name="com.example.zhl.notedemo.service.ServiceTwo" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

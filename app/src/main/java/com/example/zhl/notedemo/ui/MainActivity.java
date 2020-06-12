@@ -1,8 +1,9 @@
 package com.example.zhl.notedemo.ui;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,13 +38,16 @@ import android.widget.TextView;
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
 import com.example.zhl.notedemo.fragment.ClipFragment;
+import com.example.zhl.notedemo.service.ServiceOne;
+import com.example.zhl.notedemo.service.ServiceTwo;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends Activity
         implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private Button note_new,cancel,choseAll,delete;
@@ -64,9 +68,7 @@ public class MainActivity extends BaseActivity
 
     private Toolbar toolbar;
 
-    private  ClipboardManager clipboardManager;
-
-    private ClipFragment clipFragment;
+    public static String mPreviousText = "";
 
     public static MainActivity instance;
     public final static String DOUYIN_TITLE="抖音链接";
@@ -76,23 +78,20 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+      //  setSupportActionBar(toolbar);
         toolbar.setTitle("全部");
         cancel = (Button) findViewById(R.id.cancel);
         choseAll = (Button) findViewById(R.id.chose_all);
         delete = (Button) findViewById(R.id.delete);
         mLinearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         searchEdit = (EditText) findViewById(R.id.search_edit);
-        clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         checkPermission();
-    }
-
-    @Override
-    protected void onServiceBound() {
-        clipFragment =new ClipFragment();
-        getSupportFragmentManager()
-                .beginTransaction().
-                add(R.id.ll_fragment_container,clipFragment,"ONE").commitAllowingStateLoss();
+        Intent serviceOne = new Intent(MainActivity.this, ServiceOne.class);
+        //serviceOne.setClass(MainActivity.this, ServiceOne.class);
+        startService(serviceOne);
+        Intent serviceTwo = new Intent(MainActivity.this, ServiceTwo.class);
+        //serviceTwo.setClass(MainActivity.this, ServiceTwo.class);
+        startService(serviceTwo);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -267,12 +266,7 @@ public class MainActivity extends BaseActivity
     public void doPaste(){
         if(null != EditNoteActivity.intance){EditNoteActivity.intance.autoSave();}
         //获取剪贴板管理器：
-        ClipData cmData = clipboardManager.getPrimaryClip();
-        String content = "";
-        if(null != cmData) {
-            ClipData.Item item = cmData.getItemAt(0);
-            content = item.getText().toString();
-        }
+        String content = mPreviousText;
        /* if(content.length()>= 200) {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
@@ -292,11 +286,16 @@ public class MainActivity extends BaseActivity
         cursor = noteDb.queryByTitle(DOUYIN_TITLE);
         if (cursor.moveToFirst()){
             String id = cursor.getString(cursor.getColumnIndex("_id"));
+            String title = cursor.getString(cursor.getColumnIndex("title"));
             content = cursor.getString(cursor.getColumnIndex("content"))+
                     "\n-------------------------\n"+content;
             content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
                     "\n");
-            noteDb.updateContentById(content,NoteUtil.getDate(),id);
+            if(content.length()> 2000){
+                noteDb.updateContentById(title+NoteUtil.getDateYMD(),content,NoteUtil.getDate(),id);
+            }else {
+                noteDb.updateContentById(content, NoteUtil.getDate(), id);
+            }
             if(null != EditNoteActivity.intance){EditNoteActivity.intance.finish();}
         }else {
             String tempClass = EditNoteActivity.listClass[0];
@@ -480,5 +479,16 @@ public class MainActivity extends BaseActivity
     public void finish() {
         //super.finish(); //记住不要执行此句
         moveTaskToBack(true); //设置该activity永不过期，即不执行onDestroy()
+    }
+
+    public static boolean isServiceWorked(Context context, String serviceName) {
+        ActivityManager myManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager.getRunningServices(Integer.MAX_VALUE);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString().equals(serviceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

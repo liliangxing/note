@@ -110,6 +110,11 @@ public class NoteDb {
                 new String[]{content,tempDate,id});
     }
 
+    public void updateContentById(String title,String content,String tempDate,String id){
+        db.execSQL("update note set title =  ? ,content =  ? , date = ? where _id = ?",
+                new String[]{title,content,tempDate,id});
+    }
+
 
 
 }

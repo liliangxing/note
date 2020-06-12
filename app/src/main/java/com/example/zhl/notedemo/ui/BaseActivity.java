@@ -1,5 +1,6 @@
 package com.example.zhl.notedemo.ui;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,19 +15,18 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.example.zhl.notedemo.R;
-import com.example.zhl.notedemo.service.PasteCopyService;
+import com.example.zhl.notedemo.service.ServiceOne;
 import com.example.zhl.notedemo.utils.PermissionReq;
-import com.example.zhl.notedemo.utils.binding.ViewBinder;
+
+import java.util.ArrayList;
 
 
 /**
@@ -36,8 +36,7 @@ import com.example.zhl.notedemo.utils.binding.ViewBinder;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected Handler handler;
-    protected PasteCopyService pasteCopyService;
-    private ServiceConnection serviceConnection;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -48,30 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSystemBarTransparent();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         handler = new Handler(Looper.getMainLooper());
-        bindService();
-    }
 
-    private void bindService() {
-        Intent intent = new Intent();
-        intent.setClass(this, PasteCopyService.class);
-        serviceConnection = new PasteCopyServiceConnection();
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private class PasteCopyServiceConnection implements ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            pasteCopyService = ((PasteCopyService.PlayBinder) service).getService();
-            onServiceBound();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.e(getClass().getSimpleName(), "service disconnected");
-        }
-    }
-
-    protected void onServiceBound() {
     }
 
     private void setSystemBarTransparent() {
@@ -124,9 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (serviceConnection != null) {
-            unbindService(serviceConnection);
-        }
         super.onDestroy();
     }
 }
