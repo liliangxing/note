@@ -35,7 +35,7 @@ public class ServiceTwo extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate: " + getClass().getSimpleName());
-        clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        /*clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 
         clipboardManager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
@@ -52,7 +52,7 @@ public class ServiceTwo extends Service {
                     MainActivity.instance.doPaste();
                 }
             }
-        });
+        });*/
     }
 
 
