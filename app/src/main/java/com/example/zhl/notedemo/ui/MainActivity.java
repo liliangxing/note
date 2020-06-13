@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends Activity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private Button note_new,cancel,choseAll,delete;
@@ -78,7 +78,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-      //  setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setTitle("全部");
         cancel = (Button) findViewById(R.id.cancel);
         choseAll = (Button) findViewById(R.id.chose_all);
