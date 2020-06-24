@@ -86,12 +86,6 @@ public class MainActivity extends BaseActivity
         mLinearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         searchEdit = (EditText) findViewById(R.id.search_edit);
         checkPermission();
-        Intent serviceOne = new Intent(MainActivity.this, ServiceOne.class);
-        //serviceOne.setClass(MainActivity.this, ServiceOne.class);
-        startService(serviceOne);
-        Intent serviceTwo = new Intent(MainActivity.this, ServiceTwo.class);
-        //serviceTwo.setClass(MainActivity.this, ServiceTwo.class);
-        startService(serviceTwo);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

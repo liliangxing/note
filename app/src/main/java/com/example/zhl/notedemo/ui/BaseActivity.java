@@ -36,8 +36,9 @@ import java.util.ArrayList;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected Handler handler;
-
+    public ServiceOne playService2;
     private ProgressDialog progressDialog;
+    private ServiceConnection serviceConnection2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +48,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSystemBarTransparent();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         handler = new Handler(Looper.getMainLooper());
+        bindService2();
 
+    }
+    private void bindService2() {
+        Intent intent = new Intent();
+        intent.setClass(this, ServiceOne.class);
+        serviceConnection2 = new PlayServiceConnection2();
+        bindService(intent, serviceConnection2, Context.BIND_AUTO_CREATE);
     }
 
     private void setSystemBarTransparent() {
@@ -92,6 +100,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private class PlayServiceConnection2 implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            playService2 = ((ServiceOne.PlayBinder) service).getService();
+            onServiceBound2();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.e(getClass().getSimpleName(), "service disconnected");
+        }
+    }
+    protected void onServiceBound2() {
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -100,6 +122,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (serviceConnection2 != null) {
+            unbindService(serviceConnection2);
+        }
         super.onDestroy();
     }
 }

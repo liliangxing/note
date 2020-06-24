@@ -17,6 +17,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setTheme();
+        Intent intent1 = new Intent(this, ServiceOne.class);
+        startService(intent1);
+        Intent intent2 = new Intent(this, ServiceTwo.class);
+        startService(intent2);
     }
 
     public void setTheme(){
