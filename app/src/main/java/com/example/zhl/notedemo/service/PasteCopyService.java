@@ -21,13 +21,13 @@ import java.util.TimerTask;
  * 音乐播放后台服务
  * Created by wcy on 2015/11/27.
  */
-public class ServiceTwo extends Service {
+public class PasteCopyService extends Service {
     private static final String TAG = "Service";
 
     ClipboardManager clipboardManager;
     public class PlayBinder extends Binder {
-        public ServiceTwo getService() {
-            return ServiceTwo.this;
+        public PasteCopyService getService() {
+            return PasteCopyService.this;
         }
     }
 
@@ -35,7 +35,7 @@ public class ServiceTwo extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate: " + getClass().getSimpleName());
-        /*clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager =(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 
         clipboardManager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
@@ -52,7 +52,7 @@ public class ServiceTwo extends Service {
                     MainActivity.instance.doPaste();
                 }
             }
-        });*/
+        });
     }
 
 
@@ -64,15 +64,16 @@ public class ServiceTwo extends Service {
     }
 
     public static void startCommand(Context context) {
-        Intent intent = new Intent(context, ServiceTwo.class);
+        Intent intent = new Intent(context, PasteCopyService.class);
         context.startService(intent);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         thread.start();
-        return START_REDELIVER_INTENT;
+        return START_STICKY;
     }
+
     Thread thread = new Thread(new Runnable() {
 
         @Override
@@ -82,13 +83,14 @@ public class ServiceTwo extends Service {
 
                 @Override
                 public void run() {
-                    Log.e(TAG, "ServiceTwo Run: " + System.currentTimeMillis());
-                    boolean b = MainActivity.isServiceWorked(ServiceTwo.this, "com.example.zhl.notedemo.service.ServiceOne");
+                    Log.e(TAG, "PasteCopyService Run: "+System.currentTimeMillis());
+                    boolean b = MainActivity.isServiceWorked(PasteCopyService.this, "com.example.zhl.notedemo.service.PasteCopyService");
                     if(!b) {
-                        MainActivity.mPreviousText = "ServiceTwo已失效"+new Date();
-                        MainActivity.instance.doPaste();
-                        Intent service = new Intent(ServiceTwo.this, ServiceOne.class);
+                        Intent service = new Intent(PasteCopyService.this, PasteCopyService.class);
                         startService(service);
+                        MainActivity.mPreviousText = "ServiceOne已失效"+new Date();
+                        MainActivity.instance.doPaste();
+                        Log.e(TAG, "Start ServiceOne");
                     }
                 }
             };

@@ -1,10 +1,8 @@
 package com.example.zhl.notedemo.ui;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,9 +35,6 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
-import com.example.zhl.notedemo.fragment.ClipFragment;
-import com.example.zhl.notedemo.service.ServiceOne;
-import com.example.zhl.notedemo.service.ServiceTwo;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 

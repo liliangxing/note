@@ -1,6 +1,5 @@
 package com.example.zhl.notedemo.ui;
 
-import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,10 +22,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.example.zhl.notedemo.R;
-import com.example.zhl.notedemo.service.ServiceOne;
+import com.example.zhl.notedemo.service.PasteCopyService;
 import com.example.zhl.notedemo.utils.PermissionReq;
-
-import java.util.ArrayList;
 
 
 /**
@@ -36,7 +33,7 @@ import java.util.ArrayList;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected Handler handler;
-    public ServiceOne playService2;
+    public PasteCopyService playService2;
     private ProgressDialog progressDialog;
     private ServiceConnection serviceConnection2;
 
@@ -53,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     private void bindService2() {
         Intent intent = new Intent();
-        intent.setClass(this, ServiceOne.class);
+        intent.setClass(this, PasteCopyService.class);
         serviceConnection2 = new PlayServiceConnection2();
         bindService(intent, serviceConnection2, Context.BIND_AUTO_CREATE);
     }
@@ -103,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private class PlayServiceConnection2 implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            playService2 = ((ServiceOne.PlayBinder) service).getService();
+            playService2 = ((PasteCopyService.PlayBinder) service).getService();
             onServiceBound2();
         }
 

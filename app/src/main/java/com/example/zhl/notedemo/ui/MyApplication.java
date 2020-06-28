@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.example.zhl.notedemo.service.ServiceOne;
-import com.example.zhl.notedemo.service.ServiceTwo;
+import com.example.zhl.notedemo.service.PasteCopyService;
 
 /**
  * Created by Administrator on 2016/3/11.
@@ -17,10 +16,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setTheme();
-        Intent intent1 = new Intent(this, ServiceOne.class);
+        Intent intent1 = new Intent(this, PasteCopyService.class);
         startService(intent1);
-        Intent intent2 = new Intent(this, ServiceTwo.class);
-        startService(intent2);
     }
 
     public void setTheme(){
