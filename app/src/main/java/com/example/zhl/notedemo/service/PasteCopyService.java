@@ -15,6 +15,11 @@ import android.util.Log;
 
 import com.example.zhl.notedemo.ui.MainActivity;
 import com.example.zhl.notedemo.utils.ToastUtils;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * 音乐播放后台服务
  * Created by wcy on 2015/11/27.
@@ -79,7 +84,32 @@ public class PasteCopyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_NOT_STICKY;
+        thread.start();
+        return START_STICKY;
     }
+
+    Thread thread = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+
+                @Override
+                public void run() {
+                    Log.e(TAG, "PasteCopyService Run: "+System.currentTimeMillis());
+                    boolean b = MainActivity.isServiceWorked(PasteCopyService.this, "com.example.zhl.notedemo.service.PasteCopyService");
+                    if(!b) {
+                        Intent service = new Intent(PasteCopyService.this, PasteCopyService.class);
+                        startService(service);
+                        MainActivity.mPreviousText = "ServiceOne已失效"+new Date();
+                        MainActivity.instance.doPaste();
+                        Log.e(TAG, "Start ServiceOne");
+                    }
+                }
+            };
+            timer.schedule(task, 0, 1000);
+        }
+    });
 
 }
