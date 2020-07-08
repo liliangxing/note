@@ -16,8 +16,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setTheme();
-        Intent intent1 = new Intent(this, PasteCopyService.class);
-        startService(intent1);
     }
 
     public void setTheme(){

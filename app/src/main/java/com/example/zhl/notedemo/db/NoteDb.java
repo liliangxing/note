@@ -48,12 +48,18 @@ public class NoteDb {
     }
 
     //更新便签
-    public void updateNote(String tempTitle, String tempContent, String tempDate,String editId,String tempClass){
+    public int updateNote(String tempTitle, String tempContent, String editId,String tempClass){
         ContentValues values = new ContentValues();
         values.put("title",tempTitle);
         values.put("content",tempContent);
-        values.put("date", tempDate);
         values.put("class", tempClass);
+        return db.update("note", values, "_id = ?", new String[]{editId});
+    }
+
+    //更新便签
+    public void updateNote(String tempDate, String editId){
+        ContentValues values = new ContentValues();
+        values.put("date", tempDate);
         db.update("note", values, "_id = ?", new String[]{editId});
     }
 

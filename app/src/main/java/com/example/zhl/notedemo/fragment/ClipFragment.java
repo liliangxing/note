@@ -28,6 +28,5 @@ public  class ClipFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ViewBinder.bind(this, getView());
-        PasteCopyService.startCommand(getActivity());
     }
 }

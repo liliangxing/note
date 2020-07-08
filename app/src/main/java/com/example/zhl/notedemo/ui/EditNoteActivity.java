@@ -196,8 +196,11 @@ public class EditNoteActivity extends AppCompatActivity {
         }else if (starttemptitle.equals(tempTitle)&&starttempcontent.equals(tempContent)&&starttempclass.equals(tempClass)){
             return;
         }else {
-            noteDb.updateNote(tempTitle, tempContent, tempDate,editId,tempClass);
-            ToastUtils.show("有新的修改，已保存");
+            int res = noteDb.updateNote(tempTitle, tempContent, editId,tempClass);
+            if(res > 0) {
+                noteDb.updateNote(tempDate, editId);
+                ToastUtils.show("有新的修改，已保存");
+            }
         }
     }
 

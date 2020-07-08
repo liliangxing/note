@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
+import com.example.zhl.notedemo.service.PasteCopyService;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 

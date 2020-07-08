@@ -17,6 +17,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="标题"
+        android:paddingLeft="@dimen/nav_header_vertical_spacing"
+        android:paddingRight="@dimen/nav_header_vertical_spacing"
         android:lineSpacingMultiplier="1.3"
         android:layout_below="@+id/toolbar"
         />
@@ -38,6 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
+        android:paddingLeft="@dimen/nav_header_vertical_spacing"
+        android:paddingRight="@dimen/nav_header_vertical_spacing"
         android:lineSpacingMultiplier="1.3"
         android:hint="内容"
         />
