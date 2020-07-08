@@ -198,6 +198,9 @@ public class EditNoteActivity extends AppCompatActivity {
         }else {
             int res = noteDb.updateNote(tempTitle, tempContent, editId,tempClass);
             if(res > 0) {
+                starttemptitle = tempTitle;
+                starttempcontent = tempContent;
+                starttempclass = tempClass;
                 noteDb.updateNote(tempDate, editId);
                 ToastUtils.show("有新的修改，已保存");
             }
