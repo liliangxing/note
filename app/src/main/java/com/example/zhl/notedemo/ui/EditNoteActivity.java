@@ -191,9 +191,8 @@ public class EditNoteActivity extends AppCompatActivity {
             starttempcontent = tempContent;
             starttempclass = tempClass;
             starttempdate = tempDate;
-        }else if (tempTitle.equals(starttemptitle)&&tempContent.equals(starttempcontent)){
-            return;
         }else if (starttemptitle.equals(tempTitle)&&starttempcontent.equals(tempContent)&&starttempclass.equals(tempClass)){
+            //修复类别修改没保存
             return;
         }else {
             int res = noteDb.updateNote(tempTitle, tempContent, editId,tempClass);
