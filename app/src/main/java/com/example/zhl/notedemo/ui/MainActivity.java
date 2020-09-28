@@ -281,11 +281,10 @@ public class MainActivity extends BaseActivity
                     "\n-------------------------\n"+content;
             content = content.replaceAll(" 复制此链接，打开【抖音短视频】，直接观看视频！",
                     "\n");
-            if(content.length()> 2000){
+           /* if(content.length()> 20000){
                 noteDb.updateContentById(title+NoteUtil.getDateYMD(),content,NoteUtil.getDate(),id);
-            }else {
-                noteDb.updateContentById(content, NoteUtil.getDate(), id);
-            }
+            }else {}*/
+             noteDb.updateContentById(content, NoteUtil.getDate(), id);
             if(null != EditNoteActivity.intance){EditNoteActivity.intance.finish();}
         }else {
             String tempClass = EditNoteActivity.listClass[0];
