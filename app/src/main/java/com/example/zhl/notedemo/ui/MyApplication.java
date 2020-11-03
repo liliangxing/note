@@ -1,11 +1,8 @@
 package com.example.zhl.notedemo.ui;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatDelegate;
-
-import com.example.zhl.notedemo.service.PasteCopyService;
 
 /**
  * Created by Administrator on 2016/3/11.
@@ -16,8 +13,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setTheme();
-        Intent intent1 = new Intent(this, PasteCopyService.class);
-        startService(intent1);
     }
 
     public void setTheme(){

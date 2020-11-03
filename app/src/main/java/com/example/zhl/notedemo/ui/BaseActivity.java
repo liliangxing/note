@@ -1,28 +1,19 @@
 package com.example.zhl.notedemo.ui;
 
 import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.example.zhl.notedemo.R;
-import com.example.zhl.notedemo.service.PasteCopyService;
 import com.example.zhl.notedemo.utils.PermissionReq;
 
 
@@ -32,10 +23,7 @@ import com.example.zhl.notedemo.utils.PermissionReq;
  * Created by wcy on 2015/11/26.
  */
 public abstract class BaseActivity extends AppCompatActivity {
-    protected Handler handler;
-    public PasteCopyService playService2;
     private ProgressDialog progressDialog;
-    private ServiceConnection serviceConnection2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setSystemBarTransparent();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        handler = new Handler(Looper.getMainLooper());
-
 
     }
 

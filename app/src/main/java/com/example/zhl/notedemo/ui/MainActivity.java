@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,7 +36,7 @@ import android.widget.TextView;
 
 import com.example.zhl.notedemo.R;
 import com.example.zhl.notedemo.db.NoteDb;
-import com.example.zhl.notedemo.service.PasteCopyService;
+import com.example.zhl.notedemo.service.RecoveryHandleService;
 import com.example.zhl.notedemo.utils.NoteUtil;
 import com.example.zhl.notedemo.utils.ToastUtils;
 
@@ -52,7 +53,6 @@ public class MainActivity extends BaseActivity
     private MyAdapter adapter;
     private NoteDb noteDb;
     private Cursor cursor;
-    private static String[] PROJECTION = new String[]{"title","date"};
     public static Map<Long,Boolean> recordCursorIdStatus = new HashMap<Long,Boolean>();
     public static Map<Integer,Boolean> recordStatus = new HashMap<Integer,Boolean>();
 
@@ -65,9 +65,9 @@ public class MainActivity extends BaseActivity
     private Toolbar toolbar;
 
     public static String mPreviousText = "";
-
     public static MainActivity instance;
     public final static String DOUYIN_TITLE="抖音链接";
+    protected Handler handler2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         instance =this;
@@ -82,11 +82,13 @@ public class MainActivity extends BaseActivity
         mLinearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         searchEdit = (EditText) findViewById(R.id.search_edit);
         checkPermission();
+        Intent intent = new Intent(this, RecoveryHandleService.class);
+        startService(intent);
     }
+
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults){
-
             doCreate();
 
     }
@@ -254,7 +256,7 @@ public class MainActivity extends BaseActivity
         ToastUtils.init(this);
     }
     public void doPaste(){
-        if(null != EditNoteActivity.intance){EditNoteActivity.intance.autoSave();}
+        if(null != EditNoteActivity.instance){EditNoteActivity.instance.autoSave();}
         //获取剪贴板管理器：
         String content = mPreviousText;
        /* if(content.length()>= 200) {
@@ -285,7 +287,7 @@ public class MainActivity extends BaseActivity
                 noteDb.updateContentById(title+NoteUtil.getDateYMD(),content,NoteUtil.getDate(),id);
             }else {}*/
              noteDb.updateContentById(content, NoteUtil.getDate(), id);
-            if(null != EditNoteActivity.intance){EditNoteActivity.intance.finish();}
+            if(null != EditNoteActivity.instance){EditNoteActivity.instance.finish();}
         }else {
             String tempClass = EditNoteActivity.listClass[0];
             String tempDate = NoteUtil.getDate();
