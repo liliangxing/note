@@ -170,12 +170,18 @@ public class EditNoteActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         if(!hadBackSaved) {
             autoSave();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void autoSave(){
