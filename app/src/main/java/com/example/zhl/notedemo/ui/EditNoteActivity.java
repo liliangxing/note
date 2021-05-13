@@ -35,7 +35,6 @@ public class EditNoteActivity extends AppCompatActivity {
     private String starttempdate,editId,starttempcontent,starttemptitle,starttempclass;
     private ShareActionProvider mShareActionProvider;
     private Button note_class;
-    private Button note_save;
     private Button note_not_save;
     private ListView noteClassListView;
     private InputMethodManager imm;
@@ -53,7 +52,6 @@ public class EditNoteActivity extends AppCompatActivity {
         content = (EditText) findViewById(R.id.content);
         date = (TextView) findViewById(R.id.date);
         note_class = (Button) findViewById(R.id.note_class);
-        note_save = (Button) findViewById(R.id.note_save);
         note_not_save = (Button) findViewById(R.id.note_not_save);
 
 
@@ -88,14 +86,6 @@ public class EditNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 noteClassListView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        note_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoSave();
-                ToastUtils.show("保存成功");
             }
         });
         note_not_save.setOnClickListener(new View.OnClickListener() {
